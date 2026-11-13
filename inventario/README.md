@@ -2,16 +2,6 @@
 
 Aplicación web (Flask + SQLite + HTML/CSS) para controlar piezas y refacciones de una empresa de mantenimiento industrial, con tres roles: administrador, gerente y técnico.
 
-## Ejecutar
-
-```bash
-python -m venv venv
-source venv/bin/activate        # Windows: venv\Scripts\activate
-pip install -r requirements.txt
-python app.py
-```
-
-Abrir http://127.0.0.1:5000. La base de datos `inventario.db` se crea sola con 22 piezas de ejemplo.
 
 ## Cuentas de prueba
 
