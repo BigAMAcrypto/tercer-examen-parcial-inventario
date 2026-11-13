@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Movimientos{% endblock %}
+{% block content %}
+<div class="bar"><h1>Movimientos de inventario</h1>
+  <a class="btn ghost" href="{{ url_for('csv_movimientos') }}">Exportar CSV</a></div>
+<form class="filters" method="get">
+  <select name="tipo" onchange="this.form.submit()">
+    <option value="">Entradas y salidas</option>
+    <option value="entrada" {{ 'selected' if tipo == 'entrada' }}>Solo entradas</option>
+    <option value="salida" {{ 'selected' if tipo == 'salida' }}>Solo salidas</option>
+  </select>
+</form>
+<table>
+  <tr><th>Fecha</th><th>Pieza</th><th>Tipo</th><th>Cantidad</th><th>Usuario</th><th>Motivo</th></tr>
+  {% for m in movs %}
+  <tr><td>{{ m.fecha }}</td><td>{{ m.codigo }} · {{ m.nombre }}</td>
+    <td><span class="tag {{ 'green' if m.tipo == 'entrada' else 'red' }}">{{ m.tipo }}</span></td>
+    <td>{{ m.cantidad }}</td><td>{{ m.usuario or '—' }}</td><td>{{ m.motivo }}</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

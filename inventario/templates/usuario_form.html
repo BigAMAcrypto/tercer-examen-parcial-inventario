@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Usuario{% endblock %}
+{% block content %}
+<h1>{{ 'Editar usuario' if editando else 'Nuevo usuario' }}</h1>
+<form method="post" class="form">
+  <label>Nombre completo <input name="nombre" value="{{ u.nombre or '' }}" required></label>
+  <label>Usuario <input name="usuario" value="{{ u.usuario or '' }}" required></label>
+  <label>Contraseña {% if editando %}<small class="muted">(vacía = no cambiar)</small>{% endif %}
+    <input type="password" name="password" minlength="6" {{ '' if editando else 'required' }}></label>
+  <label>Rol
+    <select name="rol">
+      {% for r in ['administrador', 'gerente', 'tecnico'] %}<option {{ 'selected' if u.rol == r }}>{{ r }}</option>{% endfor %}
+    </select></label>
+  <div><button class="btn">Guardar</button> <a class="btn ghost" href="{{ url_for('usuarios') }}">Cancelar</a></div>
+</form>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% from "_macros.html" import estado %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1>Dashboard</h1>
+<div class="cards">
+  <div class="card"><span>Piezas registradas</span><b>{{ stats.piezas }}</b></div>
+  <div class="card"><span>Unidades en almacén</span><b>{{ stats.unidades }}</b></div>
+  <div class="card red"><span>Agotadas</span><b>{{ stats.agotadas }}</b></div>
+  <div class="card amber"><span>Existencia baja</span><b>{{ stats.bajas }}</b></div>
+  <div class="card blue"><span>Solicitudes pendientes</span><b>{{ stats.pendientes }}</b></div>
+</div>
+
+<div class="grid2">
+  <section>
+    <h2>⚠ Alertas de inventario</h2>
+    <table>
+      <tr><th>Código</th><th>Pieza</th><th>Cant.</th><th>Mín.</th><th>Estado</th></tr>
+      {% for p in alertas %}
+      <tr><td>{{ p.codigo }}</td><td>{{ p.nombre }}</td><td>{{ p.cantidad }}</td><td>{{ p.minimo }}</td><td>{{ estado(p) }}</td></tr>
+      {% else %}<tr><td colspan="5" class="muted">Sin alertas.</td></tr>{% endfor %}
+    </table>
+  </section>
+  <section>
+    <h2>Últimos movimientos</h2>
+    <table>
+      <tr><th>Fecha</th><th>Pieza</th><th>Tipo</th><th>Cant.</th></tr>
+      {% for m in movs %}
+      <tr><td>{{ m.fecha }}</td><td>{{ m.codigo }}</td>
+          <td><span class="tag {{ 'green' if m.tipo == 'entrada' else 'red' }}">{{ m.tipo }}</span></td><td>{{ m.cantidad }}</td></tr>
+      {% endfor %}
+    </table>
+  </section>
+</div>
+{% endblock %}

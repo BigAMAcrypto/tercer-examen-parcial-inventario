@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% block title %}Inventario{% endblock %} · Almacén Industrial</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+{% if session.uid %}
+<header>
+  <div class="brand">⚙ Almacén Industrial</div>
+  <nav>
+    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('piezas') }}">Piezas</a>
+    {% if session.rol == 'tecnico' %}
+      <a href="{{ url_for('solicitud_nueva') }}">Solicitar material</a>
+      <a href="{{ url_for('solicitudes') }}">Mis solicitudes</a>
+    {% endif %}
+    {% if session.rol == 'gerente' %}<a href="{{ url_for('solicitudes') }}">Solicitudes</a>{% endif %}
+    {% if session.rol in ('administrador', 'gerente') %}
+      <a href="{{ url_for('movimientos') }}">Movimientos</a>
+      <a href="{{ url_for('reportes') }}">Reportes</a>
+    {% endif %}
+    {% if session.rol == 'administrador' %}<a href="{{ url_for('usuarios') }}">Usuarios</a>{% endif %}
+  </nav>
+  <div class="user">{{ session.nombre }} <span class="tag blue">{{ session.rol }}</span>
+    <a href="{{ url_for('logout') }}">Salir</a></div>
+</header>
+{% endif %}
+<main>
+  {% with msgs = get_flashed_messages(with_categories=true) %}
+    {% for c, t in msgs %}<div class="flash {{ c }}">{{ t }}</div>{% endfor %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</main>
+</body>
+</html>

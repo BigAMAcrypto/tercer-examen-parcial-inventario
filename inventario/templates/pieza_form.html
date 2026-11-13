@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Nueva pieza' if nueva else 'Editar pieza' }}{% endblock %}
+{% block content %}
+<h1>{{ 'Nueva pieza' if nueva else 'Editar pieza' }}</h1>
+<form method="post" class="form">
+  <label>Código <input name="codigo" value="{{ p.codigo or '' }}" required></label>
+  <label>Nombre <input name="nombre" value="{{ p.nombre or '' }}" required></label>
+  <label>Categoría <input name="categoria" value="{{ p.categoria or '' }}" required></label>
+  <label>Cantidad <input type="number" name="cantidad" min="0" value="{{ p.cantidad if p.cantidad is not none else 0 }}" required></label>
+  <label>Existencia mínima (alerta) <input type="number" name="minimo" min="0" value="{{ p.minimo if p.minimo is not none else 5 }}" required></label>
+  <label>Ubicación <input name="ubicacion" value="{{ p.ubicacion or '' }}" required></label>
+  <div><button class="btn">Guardar</button> <a class="btn ghost" href="{{ url_for('piezas') }}">Cancelar</a></div>
+</form>
+{% endblock %}

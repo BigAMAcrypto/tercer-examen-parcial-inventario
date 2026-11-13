@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% from "_macros.html" import estado %}
+{% block title %}Piezas{% endblock %}
+{% block content %}
+<div class="bar"><h1>Piezas y refacciones</h1>
+  {% if session.rol == 'administrador' %}<a class="btn" href="{{ url_for('pieza_nueva') }}">+ Nueva pieza</a>{% endif %}</div>
+
+<form class="filters" method="get">
+  <input name="q" value="{{ q }}" placeholder="Buscar por código, nombre o ubicación">
+  <select name="categoria">
+    <option value="">Todas las categorías</option>
+    {% for c in cats %}<option {{ 'selected' if c == cat }}>{{ c }}</option>{% endfor %}
+  </select>
+  <button class="btn">Buscar</button>
+</form>
+
+<table>
+  <tr><th>Código</th><th>Nombre</th><th>Categoría</th><th>Cantidad</th><th>Mínimo</th><th>Ubicación</th><th>Estado</th><th></th></tr>
+  {% for p in piezas %}
+  <tr>
+    <td>{{ p.codigo }}</td><td>{{ p.nombre }}</td><td>{{ p.categoria }}</td><td>{{ p.cantidad }}</td>
+    <td>{{ p.minimo }}</td><td>{{ p.ubicacion }}</td><td>{{ estado(p) }}</td>
+    <td class="actions">
+      {% if session.rol == 'tecnico' and p.cantidad > 0 %}
+        <a class="btn small" href="{{ url_for('solicitud_nueva', pieza=p.id) }}">Solicitar</a>
+      {% elif session.rol == 'administrador' %}
+        <form method="post" action="{{ url_for('pieza_entrada', pid=p.id) }}" class="inline">
+          <input type="number" name="cantidad" min="1" placeholder="+ entrada" required>
+          <button class="btn small">Entrada</button>
+        </form>
+        <a class="btn small ghost" href="{{ url_for('pieza_editar', pid=p.id) }}">Editar</a>
+        <form method="post" action="{{ url_for('pieza_eliminar', pid=p.id) }}" class="inline"
+              onsubmit="return confirm('¿Eliminar {{ p.codigo }}? Se borrará también su historial.')">
+          <button class="btn small danger">Eliminar</button>
+        </form>
+      {% endif %}
+    </td>
+  </tr>
+  {% else %}<tr><td colspan="8" class="muted">No se encontraron piezas.</td></tr>{% endfor %}
+</table>
+{% endblock %}

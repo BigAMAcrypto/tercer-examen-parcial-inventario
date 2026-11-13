@@ -1,0 +1,9 @@
+{% macro estado(p) %}
+  {% if p.cantidad == 0 %}<span class="tag red">Agotada</span>
+  {% elif p.cantidad <= p.minimo %}<span class="tag amber">Existencia baja</span>
+  {% else %}<span class="tag green">Disponible</span>{% endif %}
+{% endmacro %}
+
+{% macro sol_estado(e) %}
+  <span class="tag {{ {'pendiente': 'amber', 'aprobada': 'green', 'rechazada': 'red'}[e] }}">{{ e|capitalize }}</span>
+{% endmacro %}

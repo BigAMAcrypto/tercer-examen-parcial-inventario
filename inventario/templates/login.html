@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Iniciar sesión{% endblock %}
+{% block content %}
+<div class="login">
+  <h1>⚙ Almacén Industrial</h1>
+  <p class="muted">Control de piezas y refacciones</p>
+  <form method="post">
+    <label>Usuario <input name="usuario" required autofocus></label>
+    <label>Contraseña <input type="password" name="password" required></label>
+    <button class="btn">Entrar</button>
+  </form>
+  <details class="muted"><summary>Cuentas de prueba</summary>
+    <p>admin / admin123<br>gerente / gerente123<br>tecnico / tecnico123</p></details>
+</div>
+{% endblock %}

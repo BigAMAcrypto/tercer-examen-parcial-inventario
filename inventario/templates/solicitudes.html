@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% from "_macros.html" import sol_estado %}
+{% block title %}Solicitudes{% endblock %}
+{% block content %}
+<div class="bar"><h1>{{ 'Mis solicitudes' if session.rol == 'tecnico' else 'Solicitudes de material' }}</h1>
+  {% if session.rol == 'tecnico' %}<a class="btn" href="{{ url_for('solicitud_nueva') }}">+ Nueva solicitud</a>{% endif %}</div>
+<table>
+  <tr><th>#</th><th>Fecha</th>{% if session.rol == 'gerente' %}<th>Técnico</th>{% endif %}
+      <th>Pieza</th><th>Cant.</th><th>Stock</th><th>Motivo</th><th>Estado</th><th>Resuelta por</th>
+      {% if session.rol == 'gerente' %}<th></th>{% endif %}</tr>
+  {% for s in solicitudes %}
+  <tr><td>{{ s.id }}</td><td>{{ s.fecha }}</td>
+    {% if session.rol == 'gerente' %}<td>{{ s.tecnico }}</td>{% endif %}
+    <td>{{ s.codigo }} · {{ s.pieza }}</td><td>{{ s.cantidad }}</td><td>{{ s.stock }}</td><td>{{ s.motivo }}</td>
+    <td>{{ sol_estado(s.estado) }}</td><td>{{ s.gerente or '—' }}</td>
+    {% if session.rol == 'gerente' %}
+    <td class="actions">
+      {% if s.estado == 'pendiente' %}
+      <form method="post" action="{{ url_for('solicitud_resolver', sid=s.id) }}" class="inline">
+        <button name="accion" value="aprobar" class="btn small">Aprobar</button>
+        <button name="accion" value="rechazar" class="btn small danger">Rechazar</button>
+      </form>
+      {% endif %}
+    </td>
+    {% endif %}
+  </tr>
+  {% else %}<tr><td colspan="10" class="muted">No hay solicitudes.</td></tr>{% endfor %}
+</table>
+{% endblock %}

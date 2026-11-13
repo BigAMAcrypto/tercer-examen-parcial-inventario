@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% from "_macros.html" import estado %}
+{% block title %}Reportes{% endblock %}
+{% block content %}
+<div class="bar"><h1>Reportes</h1>
+  <span><a class="btn ghost" href="{{ url_for('csv_inventario') }}">Inventario CSV</a>
+  <a class="btn ghost" href="{{ url_for('csv_movimientos') }}">Movimientos CSV</a>
+  <button class="btn" onclick="window.print()">Imprimir</button></span></div>
+<div class="grid2">
+  <section><h2>Existencias por categoría</h2>
+    <table><tr><th>Categoría</th><th>Piezas</th><th>Unidades</th></tr>
+      {% for c in por_cat %}<tr><td>{{ c.categoria }}</td><td>{{ c.piezas }}</td><td>{{ c.unidades }}</td></tr>{% endfor %}
+    </table></section>
+  <section><h2>Piezas más solicitadas (salidas)</h2>
+    <table><tr><th>Código</th><th>Pieza</th><th>Unidades</th></tr>
+      {% for t in top %}<tr><td>{{ t.codigo }}</td><td>{{ t.nombre }}</td><td>{{ t.total }}</td></tr>
+      {% else %}<tr><td colspan="3" class="muted">Aún no hay salidas.</td></tr>{% endfor %}
+    </table>
+    <h2>Solicitudes por estado</h2>
+    <table>{% for r in resumen %}<tr><td>{{ r.estado|capitalize }}</td><td>{{ r.n }}</td></tr>
+      {% else %}<tr><td class="muted">Sin solicitudes.</td></tr>{% endfor %}</table></section>
+</div>
+<h2>Piezas críticas</h2>
+<table><tr><th>Código</th><th>Pieza</th><th>Cantidad</th><th>Mínimo</th><th>Estado</th></tr>
+  {% for p in criticas %}<tr><td>{{ p.codigo }}</td><td>{{ p.nombre }}</td><td>{{ p.cantidad }}</td><td>{{ p.minimo }}</td><td>{{ estado(p) }}</td></tr>{% endfor %}
+</table>
+{% endblock %}

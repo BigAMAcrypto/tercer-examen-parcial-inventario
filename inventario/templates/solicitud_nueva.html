@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Solicitar material{% endblock %}
+{% block content %}
+<h1>Solicitar material</h1>
+<form method="post" class="form">
+  <label>Pieza
+    <select name="pieza_id" required>
+      {% for p in piezas %}<option value="{{ p.id }}" {{ 'selected' if p.id == sel }}>{{ p.codigo }} · {{ p.nombre }} ({{ p.cantidad }} disp.)</option>{% endfor %}
+    </select></label>
+  <label>Cantidad <input type="number" name="cantidad" min="1" required></label>
+  <label>Motivo / máquina a reparar <textarea name="motivo" rows="3" required></textarea></label>
+  <div><button class="btn">Enviar solicitud</button> <a class="btn ghost" href="{{ url_for('solicitudes') }}">Cancelar</a></div>
+</form>
+{% endblock %}

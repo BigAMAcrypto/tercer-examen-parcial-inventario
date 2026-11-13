@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Usuarios{% endblock %}
+{% block content %}
+<div class="bar"><h1>Usuarios</h1><a class="btn" href="{{ url_for('usuario_form') }}">+ Nuevo usuario</a></div>
+<table>
+  <tr><th>Nombre</th><th>Usuario</th><th>Rol</th><th></th></tr>
+  {% for u in usuarios %}
+  <tr><td>{{ u.nombre }}</td><td>{{ u.usuario }}</td><td><span class="tag blue">{{ u.rol }}</span></td>
+    <td class="actions">
+      <a class="btn small ghost" href="{{ url_for('usuario_form', uid=u.id) }}">Editar</a>
+      {% if u.id != session.uid %}
+      <form method="post" action="{{ url_for('usuario_eliminar', uid=u.id) }}" class="inline"
+            onsubmit="return confirm('¿Eliminar a {{ u.nombre }}?')"><button class="btn small danger">Eliminar</button></form>
+      {% endif %}
+    </td></tr>
+  {% endfor %}
+</table>
+{% endblock %}
